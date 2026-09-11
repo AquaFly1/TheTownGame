@@ -13,9 +13,10 @@ func advance_time(amount: Array):
 	time[1] += hours_advanced
 	time[0] += days_advanced
 	await update_time()
-	print("It is %s, and the time is %d:%d" % [days[time[0]], time[1], time[2]])
+	print_time()
 	
-
+func print_time():
+	print("It is %s, and the time is %d:%02d" % [days[time[0]], time[1], time[2]])
 
 func update_time():
 	if time[2] >= hour_lenght:
@@ -28,6 +29,6 @@ func update_time():
 		time[0] += 1
 		update_time()
 	
-	if time[0] > len(days) - 1:
-		time[0] -= (len(days) - 1)
+	if time[0] > days.size() - 1:
+		time[0] = time[0] % days.size()
 		update_time()
