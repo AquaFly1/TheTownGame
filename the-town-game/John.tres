@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="NPC" format=3 uid="uid://c7pp4u64xam4x"]
+
+[ext_resource type="Script" uid="uid://p6cvoiemwtyi" path="res://NPC.gd" id="1_7nbgm"]
+
+[resource]
+script = ExtResource("1_7nbgm")
+dialogue = "Hi, I'm John. Have you seen my cat?"
+metadata/_custom_type_script = "uid://p6cvoiemwtyi"
