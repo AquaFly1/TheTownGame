@@ -5,4 +5,5 @@
 [resource]
 script = ExtResource("1_7nbgm")
 dialogue = "Hi, I'm John. Have you seen my cat?"
+exposure = Array[String](["0:08:00-0:17:00"])
 metadata/_custom_type_script = "uid://p6cvoiemwtyi"
