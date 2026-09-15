@@ -15,10 +15,17 @@ func interact():
 
 #Put in npc scene!
 func handle_exposure():
+	exposed = false
 	for i in exposure:
-		if TimeManager.time[0] == i[0]:
-			if TimeManager.time[1] > i.substr(2,3):
+		if TimeManager.time[0] == int(i[0]):
+			if TimeManager.time[1] > int(i.substr(2,2)):
 				exposed = true
-			if TimeManager.time[1] == i.substr(2,3):
-				if TimeManager.time[2] >= i.substr(5,6):
+			elif TimeManager.time[1] == int(i.substr(2,2)):
+				if TimeManager.time[2] >= int(i.substr(5,2)):
 					exposed = true
+		if TimeManager.time[0] == int(i[8]):
+			if TimeManager.time[1] > int(i.substr(10,2)):
+				exposed = false
+			elif TimeManager.time[1] == int(i.substr(10,2)):
+				if TimeManager.time[2] > int(i.substr(13,2)):
+					exposed = false
