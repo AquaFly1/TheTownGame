@@ -16,8 +16,9 @@ func _process(_delta: float) -> void:
 		tween.set_ease(Tween.EASE_OUT)
 		tween.tween_property(self, "position", get_global_mouse_position()-offset, 0.1)
 	x_speed = position.x - last_pos.x
+	x_speed = clampf(x_speed, -20., 20.)
 	var rot_tween = get_tree().create_tween()
-	rot_tween.tween_property(self, "rotation", x_speed*0.05, 0.1)
+	rot_tween.tween_property(self, "rotation", x_speed*0.05, 0.2)
 	last_pos = position
 
 func _on_button_button_up() -> void:
