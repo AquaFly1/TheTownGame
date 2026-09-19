@@ -1,3 +1,73 @@
 [gd_scene format=3 uid="uid://dj2b2wfudhc0r"]
 
-[node name="Body" type="Node2D" unique_id=1218206525]
+[ext_resource type="Script" uid="uid://dny88dyxvcawb" path="res://Characters/char_rig.gd" id="1_akw5t"]
+[ext_resource type="Texture2D" uid="uid://2o1wcyscws0l" path="res://Characters/robot/robothead.png" id="1_vlfbo"]
+[ext_resource type="Texture2D" uid="uid://caq0adeq0jueg" path="res://Characters/robot/robotbody.png" id="2_akw5t"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_f3gr1"]
+size = Vector2(4, 4)
+
+[node name="Body" type="Node2D" unique_id=1218206525 node_paths=PackedStringArray("body", "target_master", "legL", "foot_legL", "legR", "foot_legR", "legL_target", "legR_target")]
+position = Vector2(454, 341)
+script = ExtResource("1_akw5t")
+body = NodePath("torso")
+target_master = NodePath("global_anchor/Target_Master")
+legL = NodePath("torso/LegL")
+foot_legL = NodePath("torso/LegL/global_anchor/Foot_LegL")
+legR = NodePath("torso/LegR")
+foot_legR = NodePath("torso/LegR/global_anchor/Foot_LegR")
+legL_target = NodePath("torso/LegL/global_anchor/Target_LegL")
+legR_target = NodePath("torso/LegR/global_anchor/Target_LegR")
+walk_speed = 100.0
+acceleration = 3.0
+leg_length = 20.0
+step_size = 20.0
+
+[node name="torso" type="Sprite2D" parent="." unique_id=1192672105]
+texture = ExtResource("2_akw5t")
+region_enabled = true
+region_rect = Rect2(23, 27, 18, 18)
+
+[node name="Head" type="Sprite2D" parent="torso" unique_id=1454606877]
+position = Vector2(0, -15)
+texture = ExtResource("1_vlfbo")
+region_enabled = true
+region_rect = Rect2(21, 10, 22, 21)
+
+[node name="LegL" type="Line2D" parent="torso" unique_id=522875622]
+show_behind_parent = true
+points = PackedVector2Array(-5, 7, -5, 27)
+width = 1.0
+
+[node name="global_anchor" type="Node" parent="torso/LegL" unique_id=1954797888]
+
+[node name="Target_LegL" type="Sprite2D" parent="torso/LegL/global_anchor" unique_id=486482424]
+position = Vector2(413, 388)
+texture = SubResource("PlaceholderTexture2D_f3gr1")
+
+[node name="Foot_LegL" type="Sprite2D" parent="torso/LegL/global_anchor" unique_id=1288762618]
+position = Vector2(377, 349)
+texture = SubResource("PlaceholderTexture2D_f3gr1")
+
+[node name="LegR" type="Line2D" parent="torso" unique_id=348710438]
+show_behind_parent = true
+position = Vector2(10, 0)
+points = PackedVector2Array(-5, 7, -5, 27)
+width = 1.0
+
+[node name="global_anchor" type="Node" parent="torso/LegR" unique_id=338586276]
+
+[node name="Target_LegR" type="Sprite2D" parent="torso/LegR/global_anchor" unique_id=860965397]
+position = Vector2(475, 390)
+texture = SubResource("PlaceholderTexture2D_f3gr1")
+
+[node name="Foot_LegR" type="Sprite2D" parent="torso/LegR/global_anchor" unique_id=825882190]
+position = Vector2(377, 349)
+texture = SubResource("PlaceholderTexture2D_f3gr1")
+
+[node name="global_anchor" type="Node" parent="." unique_id=1630417189]
+
+[node name="Target_Master" type="Sprite2D" parent="global_anchor" unique_id=1452175938]
+modulate = Color(18.892157, 0, 0, 1)
+position = Vector2(254, 330)
+texture = SubResource("PlaceholderTexture2D_f3gr1")
