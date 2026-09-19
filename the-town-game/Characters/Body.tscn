@@ -3,9 +3,30 @@
 [ext_resource type="Script" uid="uid://dny88dyxvcawb" path="res://Characters/char_rig.gd" id="1_akw5t"]
 [ext_resource type="Texture2D" uid="uid://2o1wcyscws0l" path="res://Characters/robot/robothead.png" id="1_vlfbo"]
 [ext_resource type="Texture2D" uid="uid://caq0adeq0jueg" path="res://Characters/robot/robotbody.png" id="2_akw5t"]
+[ext_resource type="Script" uid="uid://dg4i5kfl5wr3e" path="res://Characters/effects/line_physics.gd" id="4_akw5t"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_f3gr1"]
 size = Vector2(4, 4)
+
+[sub_resource type="Curve" id="Curve_akw5t"]
+_data = [Vector2(0, 0.6615385), 0.0, 0.0, 0, 0, Vector2(0.114893615, 1), 0.1032967, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_akw5t"]
+colors = PackedColorArray(0.35686275, 0.4392157, 0.8862745, 1, 0.38039216, 0.67058825, 0.9647059, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0pa88"]
+radius = 3.0
+
+[sub_resource type="Curve" id="Curve_0h0yo"]
+_data = [Vector2(0, 0.6615385), 0.0, 0.0, 0, 0, Vector2(0.7148936, 1), 0.1032967, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_0h0yo"]
+colors = PackedColorArray(0.34509805, 0.4, 0.44705883, 1, 0.348, 0.42146668, 0.58, 1)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vlfbo"]
+size = Vector2(4, 2)
 
 [node name="Body" type="Node2D" unique_id=1218206525 node_paths=PackedStringArray("body", "torso", "target_master", "legL", "foot_legL", "legR", "foot_legR", "legL_target", "legR_target")]
 position = Vector2(454, 341)
@@ -13,12 +34,12 @@ script = ExtResource("1_akw5t")
 body = NodePath("body")
 torso = NodePath("body/torso")
 target_master = NodePath("global_anchor/Target_Master")
-legL = NodePath("body/LegL")
-foot_legL = NodePath("body/LegL/global_anchor/Foot_LegL")
-legR = NodePath("body/LegR")
-foot_legR = NodePath("body/LegR/global_anchor/Foot_LegR")
-legL_target = NodePath("body/LegL/global_anchor/Target_LegL")
-legR_target = NodePath("body/LegR/global_anchor/Target_LegR")
+legL = NodePath("body/torso/LegL")
+foot_legL = NodePath("body/torso/LegL/global_anchor/Foot_LegL")
+legR = NodePath("body/torso/LegR")
+foot_legR = NodePath("body/torso/LegR/global_anchor/Foot_LegR")
+legL_target = NodePath("body/torso/LegL/global_anchor/Target_LegL")
+legR_target = NodePath("body/torso/LegR/global_anchor/Target_LegR")
 walk_speed = 100.0
 acceleration = 3.0
 step_size = 10.0
@@ -27,7 +48,7 @@ step_size = 10.0
 
 [node name="Target_Master" type="Sprite2D" parent="global_anchor" unique_id=1452175938]
 modulate = Color(18.892157, 0, 0, 1)
-position = Vector2(254, 330)
+position = Vector2(254, 360)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
 [node name="ground_pos" type="Marker2D" parent="." unique_id=559184973]
@@ -36,7 +57,7 @@ position = Vector2(0, 20)
 [node name="body" type="Marker2D" parent="." unique_id=330320278]
 
 [node name="torso" type="Sprite2D" parent="body" unique_id=1192672105]
-position = Vector2(0, -6)
+position = Vector2(0, -8)
 texture = ExtResource("2_akw5t")
 region_enabled = true
 region_rect = Rect2(23, 27, 18, 18)
@@ -47,36 +68,200 @@ texture = ExtResource("1_vlfbo")
 region_enabled = true
 region_rect = Rect2(21, 10, 22, 21)
 
-[node name="LegL" type="Line2D" parent="body" unique_id=522875622]
-position = Vector2(-5, 2)
+[node name="scarf" type="Line2D" parent="body/torso/Head" unique_id=1040138724]
+process_mode = 3
+show_behind_parent = true
+z_index = -1
+position = Vector2(-7, 6)
+points = PackedVector2Array(0, 0, 10, -2, 10, 8)
+width = 8.0
+width_curve = SubResource("Curve_akw5t")
+gradient = SubResource("Gradient_akw5t")
+joint_mode = 2
+script = ExtResource("4_akw5t")
+
+[node name="base" type="StaticBody2D" parent="body/torso/Head/scarf" unique_id=368788394]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/Head/scarf/base" unique_id=236283892]
+visible = false
+shape = SubResource("CircleShape2D_0pa88")
+disabled = true
+
+[node name="PinJoint2D" type="PinJoint2D" parent="body/torso/Head/scarf/base" unique_id=429524832]
+visible = false
+node_a = NodePath("..")
+node_b = NodePath("../../mid")
+bias = 0.3
+
+[node name="mid" type="RigidBody2D" parent="body/torso/Head/scarf" unique_id=1616523800]
+visible = false
+position = Vector2(5, 0)
+mass = 0.1
+linear_damp = 2.0
+angular_damp = 2.0
+
+[node name="PinJoint2D" type="PinJoint2D" parent="body/torso/Head/scarf/mid" unique_id=1679420919]
+node_a = NodePath("..")
+node_b = NodePath("../../end")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/Head/scarf/mid" unique_id=1025401397]
+visible = false
+shape = SubResource("CircleShape2D_0pa88")
+
+[node name="end" type="RigidBody2D" parent="body/torso/Head/scarf" unique_id=1481407200]
+visible = false
+position = Vector2(10, 0)
+mass = 0.1
+linear_damp = 2.0
+angular_damp = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/Head/scarf/end" unique_id=1020123182]
+visible = false
+shape = SubResource("CircleShape2D_0pa88")
+
+[node name="PinJoint2D" type="PinJoint2D" parent="body/torso/Head/scarf/end" unique_id=209640720]
+node_a = NodePath("..")
+node_b = NodePath("../../end2")
+
+[node name="end2" type="RigidBody2D" parent="body/torso/Head/scarf" unique_id=2003355134]
+visible = false
+position = Vector2(15, 0)
+mass = 0.1
+linear_damp = 2.0
+angular_damp = 2.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/Head/scarf/end2" unique_id=1466964633]
+visible = false
+shape = SubResource("CircleShape2D_0pa88")
+
+[node name="armL" type="Line2D" parent="body/torso" unique_id=145741789]
+process_mode = 3
+position = Vector2(-8, -5)
+points = PackedVector2Array(0, 0, 10, -2, 10, 8)
+width_curve = SubResource("Curve_0h0yo")
+gradient = SubResource("Gradient_0h0yo")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_akw5t")
+
+[node name="base" type="StaticBody2D" parent="body/torso/armL" unique_id=1353295198]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/armL/base" unique_id=535783919]
+shape = SubResource("CircleShape2D_0pa88")
+disabled = true
+
+[node name="PinJoint2D" type="PinJoint2D" parent="body/torso/armL/base" unique_id=1536285306]
+node_a = NodePath("..")
+node_b = NodePath("../../mid")
+bias = 0.5
+
+[node name="mid" type="RigidBody2D" parent="body/torso/armL" unique_id=267177225]
+position = Vector2(-3, 7)
+mass = 0.5
+linear_damp = 10.0
+angular_damp = 10.0
+
+[node name="PinJoint2D" type="PinJoint2D" parent="body/torso/armL/mid" unique_id=364329]
+node_a = NodePath("..")
+node_b = NodePath("../../end")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/armL/mid" unique_id=61352424]
+shape = SubResource("CircleShape2D_0pa88")
+
+[node name="end" type="RigidBody2D" parent="body/torso/armL" unique_id=59479230]
+position = Vector2(-4, 15)
+mass = 0.5
+linear_damp = 10.0
+angular_damp = 10.0
+
+[node name="Sprite2D" type="Sprite2D" parent="body/torso/armL/end" unique_id=1585005904]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+show_behind_parent = true
+position = Vector2(0, 1)
+texture = SubResource("PlaceholderTexture2D_vlfbo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/armL/end" unique_id=560914083]
+shape = SubResource("CircleShape2D_0pa88")
+
+[node name="armR" type="Line2D" parent="body/torso" unique_id=296316096]
+process_mode = 3
+position = Vector2(8, -5)
+points = PackedVector2Array(0, 0, 10, -2, 10, 8)
+width_curve = SubResource("Curve_0h0yo")
+gradient = SubResource("Gradient_0h0yo")
+joint_mode = 2
+begin_cap_mode = 2
+script = ExtResource("4_akw5t")
+
+[node name="base" type="StaticBody2D" parent="body/torso/armR" unique_id=478136270]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/armR/base" unique_id=1837967923]
+shape = SubResource("CircleShape2D_0pa88")
+disabled = true
+
+[node name="PinJoint2D" type="PinJoint2D" parent="body/torso/armR/base" unique_id=598562719]
+node_a = NodePath("..")
+node_b = NodePath("../../mid")
+bias = 0.5
+
+[node name="mid" type="RigidBody2D" parent="body/torso/armR" unique_id=1767919893]
+position = Vector2(-3, 7)
+mass = 0.5
+linear_damp = 10.0
+angular_damp = 10.0
+
+[node name="PinJoint2D" type="PinJoint2D" parent="body/torso/armR/mid" unique_id=1595960873]
+node_a = NodePath("..")
+node_b = NodePath("../../end")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/armR/mid" unique_id=326537679]
+shape = SubResource("CircleShape2D_0pa88")
+
+[node name="end" type="RigidBody2D" parent="body/torso/armR" unique_id=1071882866]
+position = Vector2(-4, 15)
+mass = 0.5
+linear_damp = 10.0
+angular_damp = 10.0
+
+[node name="Sprite2D" type="Sprite2D" parent="body/torso/armR/end" unique_id=530835644]
+modulate = Color(18.892157, 18.892157, 18.892157, 1)
+show_behind_parent = true
+position = Vector2(0, 1)
+texture = SubResource("PlaceholderTexture2D_vlfbo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="body/torso/armR/end" unique_id=201513174]
+shape = SubResource("CircleShape2D_0pa88")
+
+[node name="LegL" type="Line2D" parent="body/torso" unique_id=522875622]
+position = Vector2(-5, 8)
 points = PackedVector2Array(0, 0, 0, 20, 0, 0)
 width = 1.0
 
-[node name="global_anchor" type="Node" parent="body/LegL" unique_id=1954797888]
+[node name="global_anchor" type="Node" parent="body/torso/LegL" unique_id=1954797888]
 
-[node name="Target_LegL" type="Sprite2D" parent="body/LegL/global_anchor" unique_id=486482424]
+[node name="Target_LegL" type="Sprite2D" parent="body/torso/LegL/global_anchor" unique_id=486482424]
 visible = false
 position = Vector2(413, 388)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
-[node name="Foot_LegL" type="Sprite2D" parent="body/LegL/global_anchor" unique_id=1288762618]
+[node name="Foot_LegL" type="Sprite2D" parent="body/torso/LegL/global_anchor" unique_id=1288762618]
 visible = false
 position = Vector2(377, 349)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
-[node name="LegR" type="Line2D" parent="body" unique_id=348710438]
-position = Vector2(5, 2)
+[node name="LegR" type="Line2D" parent="body/torso" unique_id=348710438]
+position = Vector2(5, 8)
 points = PackedVector2Array(0, 0, 0, 0, 0, 20)
 width = 1.0
 
-[node name="global_anchor" type="Node" parent="body/LegR" unique_id=338586276]
+[node name="global_anchor" type="Node" parent="body/torso/LegR" unique_id=338586276]
 
-[node name="Target_LegR" type="Sprite2D" parent="body/LegR/global_anchor" unique_id=860965397]
+[node name="Target_LegR" type="Sprite2D" parent="body/torso/LegR/global_anchor" unique_id=860965397]
 visible = false
 position = Vector2(475, 390)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
-[node name="Foot_LegR" type="Sprite2D" parent="body/LegR/global_anchor" unique_id=825882190]
+[node name="Foot_LegR" type="Sprite2D" parent="body/torso/LegR/global_anchor" unique_id=825882190]
 visible = false
 position = Vector2(377, 349)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
