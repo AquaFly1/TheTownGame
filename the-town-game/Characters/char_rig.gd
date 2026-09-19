@@ -33,10 +33,8 @@ func _process(delta: float) -> void:
 	
 	if foot_turn != -1: 
 		foot_L_mode = velocity.length() > 50
-		print("l",foot_L_mode)
 	if foot_turn != -2: 
 		foot_R_mode = velocity.length() > 50
-		print("r",foot_R_mode)
 	
 	if foot_L_mode: legL_target.global_position = body.global_position.move_toward(body.global_position+velocity,min(velocity.length(),step_size)) + Vector2(0,ground_height) + (legL.global_position - body.global_position)
 	else: legL_target.global_position = legL.global_position + Vector2(0,ground_height)
