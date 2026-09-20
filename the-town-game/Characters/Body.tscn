@@ -28,12 +28,13 @@ colors = PackedColorArray(0.34509805, 0.4, 0.44705883, 1, 0.348, 0.42146668, 0.5
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vlfbo"]
 size = Vector2(4, 2)
 
-[node name="Body" type="Node2D" unique_id=1218206525 node_paths=PackedStringArray("body", "torso", "target_master", "legL", "foot_legL", "legR", "foot_legR", "legL_target", "legR_target")]
+[node name="Body" type="Node2D" unique_id=1218206525 node_paths=PackedStringArray("body", "torso", "target_master", "foot_center", "legL", "foot_legL", "legR", "foot_legR", "legL_target", "legR_target")]
 position = Vector2(454, 341)
 script = ExtResource("1_akw5t")
 body = NodePath("body")
 torso = NodePath("body/torso")
 target_master = NodePath("global_anchor/Target_Master")
+foot_center = NodePath("foot_center")
 legL = NodePath("body/torso/LegL")
 foot_legL = NodePath("body/torso/LegL/global_anchor/Foot_LegL")
 legR = NodePath("body/torso/LegR")
@@ -47,11 +48,12 @@ step_size = 10.0
 [node name="global_anchor" type="Node" parent="." unique_id=1630417189]
 
 [node name="Target_Master" type="Sprite2D" parent="global_anchor" unique_id=1452175938]
+visible = false
 modulate = Color(18.892157, 0, 0, 1)
 position = Vector2(254, 360)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
-[node name="ground_pos" type="Marker2D" parent="." unique_id=559184973]
+[node name="foot_center" type="Marker2D" parent="." unique_id=559184973]
 position = Vector2(0, 20)
 
 [node name="body" type="Marker2D" parent="." unique_id=330320278]
@@ -245,7 +247,6 @@ position = Vector2(413, 388)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
 [node name="Foot_LegL" type="Sprite2D" parent="body/torso/LegL/global_anchor" unique_id=1288762618]
-visible = false
 position = Vector2(377, 349)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
@@ -262,6 +263,5 @@ position = Vector2(475, 390)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
 [node name="Foot_LegR" type="Sprite2D" parent="body/torso/LegR/global_anchor" unique_id=825882190]
-visible = false
 position = Vector2(377, 349)
 texture = SubResource("PlaceholderTexture2D_f3gr1")

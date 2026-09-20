@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cueqmxphxwae8"]
+
+[ext_resource type="PackedScene" uid="uid://dj2b2wfudhc0r" path="res://Characters/Body.tscn" id="1_3edat"]
+
+[sub_resource type="Gradient" id="Gradient_3edat"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.5165094, 0.5683962, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0.97306156, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_f3gr1"]
+gradient = SubResource("Gradient_3edat")
+width = 512
+height = 4
+
+[node name="Intro" type="Node2D" unique_id=527905812]
+
+[node name="Body" parent="." unique_id=1218206525 instance=ExtResource("1_3edat")]
+position = Vector2(209, 360)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1971733196]
+position = Vector2(455, 302)
+texture = SubResource("GradientTexture2D_f3gr1")

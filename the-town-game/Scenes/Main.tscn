@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://db8l6ditymnv"]
+
+[ext_resource type="PackedScene" uid="uid://cueqmxphxwae8" path="res://Scenes/Intro.tscn" id="1_r150o"]
+[ext_resource type="Shader" uid="uid://crgqx7ibmf4pg" path="res://Shaders/crt.gdshader" id="2_idj7w"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r150o"]
+shader = ExtResource("2_idj7w")
+shader_parameter/amount = 0.0999999977648
+shader_parameter/speed = 0.10000000149012
+
+[node name="Main" type="Node2D" unique_id=251458187]
+
+[node name="Intro" parent="." unique_id=527905812 instance=ExtResource("1_r150o")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=276636741]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=312164577]
+visible = false
+material = SubResource("ShaderMaterial_r150o")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 13.0
+offset_top = -2.0
+offset_right = 13.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
