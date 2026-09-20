@@ -30,9 +30,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	
 	target_master.global_position = get_viewport().get_mouse_position()
+	target_master.global_position = Vector2(500+200*sin(Time.get_ticks_msec()/1000.),300)
 	var vec = (target_master.global_position-(body.global_position+Vector2(0,ground_height)))
 	velocity = (velocity.move_toward(vec*5,acceleration*walk_speed*delta)*Vector2(1,1.5)).limit_length(walk_speed)*Vector2(1,1/1.5)
-	velocity = velocity.lerp(vec/delta/5,3*delta)
+	velocity = velocity.lerp(vec/delta,1)
 	body.global_position += velocity*delta
 	direction = lerp_angle(direction,velocity.angle(),5*delta)
 	legL.position.x = leg_start_spacing*-1 * lerp(1.,sin(direction),clamp(velocity.length()/walk_speed,0,1))
@@ -58,9 +59,9 @@ func _process(delta: float) -> void:
 		foot_R_mode = velocity.length() > walk_speed/2
 	
 	if foot_L_mode: legL_target.global_position = body.global_position.move_toward(body.global_position+velocity,min(velocity.length(),step_size)) + Vector2(0,ground_height) + legL.position*Vector2.RIGHT
-	else: legL_target.global_position = legL.global_position + Vector2(0,ground_height)
+	else: legL_target.global_position = body.global_position + legL.position*Vector2.RIGHT + Vector2(0,ground_height)
 	if foot_R_mode:	legR_target.global_position = body.global_position.move_toward(body.global_position+velocity,min(velocity.length(),step_size)) + Vector2(0,ground_height) + legR.position*Vector2.RIGHT
-	else: legR_target.global_position = legR.global_position + Vector2(0,ground_height)
+	else: legR_target.global_position = body.global_position + legR.position*Vector2.RIGHT + Vector2(0,ground_height)
 
 	var step_time = 20/max(walk_speed,velocity.length())
 	
