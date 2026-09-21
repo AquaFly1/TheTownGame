@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 	#ground_height = 10*sin(Time.get_ticks_msec()/1000.)
 	ground_height = foot_center.position.y
 	#target_master.global_position = get_viewport().get_mouse_position()
-	target_master.global_position = Vector2(500+200*sin(Time.get_ticks_msec()/16000.),300)
+	target_master.global_position = Vector2(500+200*sin(Time.get_ticks_msec()/1000.),300)
 	var vec = (target_master.global_position-(body.global_position+Vector2(0,ground_height)))
 	velocity = (velocity.move_toward(vec*5,acceleration*walk_speed*delta)*Vector2(1,1.5)).limit_length(walk_speed)*Vector2(1,1/1.5)
 	velocity = velocity.lerp(vec/delta,1)
@@ -73,7 +73,7 @@ func _process(delta: float) -> void:
 		var tween = create_tween()
 		tween.set_trans(Tween.TRANS_QUAD)
 		tween.set_ease(Tween.EASE_OUT)
-		tween.tween_method(func(t):foot_legL.global_position = foot_legL_start.lerp(legL_target.global_position,t) ,0.,1.,step_time).finished.connect(func():foot_turn = 2)
+		tween.tween_method(func(t):foot_legL.global_position = foot_legL_start.lerp(legL_target.global_position,t) - Vector2( 0,10*(0.25-pow(t-0.5,2)) ) ,0.,1.,step_time).finished.connect(func():foot_turn = 2)
 			
 	elif foot_turn == 2 and foot_legR.global_position.distance_to(legR_target.global_position)>2:
 		foot_turn = -2
@@ -81,7 +81,7 @@ func _process(delta: float) -> void:
 		var tween = create_tween()
 		tween.set_trans(Tween.TRANS_QUAD)
 		tween.set_ease(Tween.EASE_OUT)
-		tween.tween_method(func(t):foot_legR.global_position = foot_legR_start.lerp(legR_target.global_position,t) ,0.,1.,step_time).finished.connect(func():foot_turn = 1)
+		tween.tween_method(func(t):foot_legR.global_position = foot_legR_start.lerp(legR_target.global_position,t) - Vector2( 0,10*(0.25-pow(t-0.5,2)) ) ,0.,1.,step_time).finished.connect(func():foot_turn = 1)
 	
 	
 	legL.set_point_position(2,(foot_legL.global_position - legL.global_position).limit_length(leg_length))

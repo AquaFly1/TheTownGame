@@ -247,6 +247,7 @@ position = Vector2(413, 388)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
 [node name="Foot_LegL" type="Sprite2D" parent="body/torso/LegL/global_anchor" unique_id=1288762618]
+visible = false
 position = Vector2(377, 349)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
@@ -263,5 +264,6 @@ position = Vector2(475, 390)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
 [node name="Foot_LegR" type="Sprite2D" parent="body/torso/LegR/global_anchor" unique_id=825882190]
+visible = false
 position = Vector2(377, 349)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
