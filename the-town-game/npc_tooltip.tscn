@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bwc6nwh7vwnio"]
+
+[ext_resource type="Script" uid="uid://cn4hf8n3hjf3b" path="res://npc_tooltip.gd" id="1_hit5b"]
+
+[node name="NPC_tooltip" type="Control" unique_id=957481724]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+tooltip_text = "???
+This character may or may not be exposed"
+script = ExtResource("1_hit5b")

@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 	x_speed = position.x - last_pos.x
 	x_speed = clampf(x_speed, -20., 20.)
 	var rot_tween = get_tree().create_tween()
-	rot_tween.tween_property(self, "rotation", x_speed*0.1, 0.2)
+	rot_tween.tween_property(self, "rotation", x_speed*0.1, 0.4)
 	last_pos = position
 
 func _on_button_button_up() -> void:
