@@ -28,6 +28,44 @@ colors = PackedColorArray(0.34509805, 0.4, 0.44705883, 1, 0.348, 0.42146668, 0.5
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vlfbo"]
 size = Vector2(4, 2)
 
+[sub_resource type="Animation" id="Animation_0h0yo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("global_anchor/Target_Master:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(134, 360)]
+}
+
+[sub_resource type="Animation" id="Animation_akw5t"]
+resource_name = "new_animation"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("global_anchor/Target_Master:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(134, 360), Vector2(780, 360), Vector2(134, 360)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0h0yo"]
+_data = {
+&"RESET": SubResource("Animation_0h0yo"),
+&"new_animation": SubResource("Animation_akw5t")
+}
+
 [node name="Body" type="Node2D" unique_id=1218206525 node_paths=PackedStringArray("body", "torso", "target_master", "foot_center", "legL", "foot_legL", "legR", "foot_legR", "legL_target", "legR_target")]
 position = Vector2(454, 341)
 script = ExtResource("1_akw5t")
@@ -41,16 +79,15 @@ legR = NodePath("body/torso/LegR")
 foot_legR = NodePath("body/torso/LegR/global_anchor/Foot_LegR")
 legL_target = NodePath("body/torso/LegL/global_anchor/Target_LegL")
 legR_target = NodePath("body/torso/LegR/global_anchor/Target_LegR")
-walk_speed = 100.0
+walk_speed = 25.0
 acceleration = 3.0
-step_size = 10.0
 
 [node name="global_anchor" type="Node" parent="." unique_id=1630417189]
 
 [node name="Target_Master" type="Sprite2D" parent="global_anchor" unique_id=1452175938]
 visible = false
 modulate = Color(18.892157, 0, 0, 1)
-position = Vector2(254, 360)
+position = Vector2(134, 360)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
 
 [node name="foot_center" type="Marker2D" parent="." unique_id=559184973]
@@ -267,3 +304,8 @@ texture = SubResource("PlaceholderTexture2D_f3gr1")
 visible = false
 position = Vector2(377, 349)
 texture = SubResource("PlaceholderTexture2D_f3gr1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=643299773]
+libraries/ = SubResource("AnimationLibrary_0h0yo")
+autoplay = &"new_animation"
+speed_scale = 0.05

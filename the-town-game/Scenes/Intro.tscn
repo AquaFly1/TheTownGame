@@ -18,5 +18,6 @@ height = 4
 position = Vector2(209, 360)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1971733196]
+visible = false
 position = Vector2(455, 302)
 texture = SubResource("GradientTexture2D_f3gr1")

@@ -14,7 +14,7 @@ extends Node2D
 @export var acceleration:float
 @export var ground_height: float = 20
 @onready var leg_length: float = 20
-@export var step_size: float
+@export var step_mult: float = 1.
 @export var leg_start_spacing: float = 5
 
 var velocity:= Vector2.ZERO
@@ -22,9 +22,10 @@ var foot_turn = 1
 var foot_L_mode = 0
 var foot_R_mode = 0
 var direction = 0
+var step_size = 0.
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	target_master.global_position = foot_center.global_position
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -32,10 +33,11 @@ func _process(delta: float) -> void:
 	#ground_height = 10*sin(Time.get_ticks_msec()/1000.)
 	ground_height = foot_center.position.y
 	#target_master.global_position = get_viewport().get_mouse_position()
-	target_master.global_position = Vector2(500+200*sin(Time.get_ticks_msec()/1000.),300)
+	#target_master.global_position.x = 500+200*sin(Time.get_ticks_msec()/4000.)
 	var vec = (target_master.global_position-(body.global_position+Vector2(0,ground_height)))
-	velocity = (velocity.move_toward(vec*5,acceleration*walk_speed*delta)*Vector2(1,1.5)).limit_length(walk_speed)*Vector2(1,1/1.5)
+	#velocity = (velocity.move_toward(vec*5,acceleration*walk_speed*delta)*Vector2(1,1.5)).limit_length(walk_speed)*Vector2(1,1/1.5)
 	velocity = velocity.lerp(vec/delta,1)
+	#velocity = vec
 	body.global_position += velocity*delta
 	direction = lerp_angle(direction,velocity.angle(),5*delta)
 	legL.position.x = leg_start_spacing*-1 * lerp(1.,sin(direction),clamp(velocity.length()/walk_speed,0,1))
@@ -55,17 +57,20 @@ func _process(delta: float) -> void:
 	legL.global_rotation = 0
 	legR.global_rotation = 0
 	
+	step_size = lerp(step_size, 5+velocity.length()/8*step_mult,1)
+	
 	if foot_turn != -1: 
 		foot_L_mode = velocity.length() > walk_speed/4
 	if foot_turn != -2: 
 		foot_R_mode = velocity.length() > walk_speed/4
 	
-	if foot_L_mode: legL_target.global_position = body.global_position.move_toward(body.global_position+velocity,min(velocity.length(),step_size)) + Vector2(foot_center.position.x,ground_height) + legL.position*Vector2.RIGHT
+	if foot_L_mode: legL_target.global_position = body.global_position.move_toward(body.global_position+velocity,min(velocity.length(),step_size/2)) + Vector2(foot_center.position.x,ground_height) + legL.position*Vector2.RIGHT
 	else: legL_target.global_position = body.global_position + legL.position*Vector2.RIGHT + Vector2(foot_center.position.x,ground_height)
-	if foot_R_mode:	legR_target.global_position = body.global_position.move_toward(body.global_position+velocity,min(velocity.length(),step_size)) + Vector2(foot_center.position.x,ground_height) + legR.position*Vector2.RIGHT
+	if foot_R_mode:	legR_target.global_position = body.global_position.move_toward(body.global_position+velocity,min(velocity.length(),step_size/2)) + Vector2(foot_center.position.x,ground_height) + legR.position*Vector2.RIGHT
 	else: legR_target.global_position = body.global_position + legR.position*Vector2.RIGHT + Vector2(foot_center.position.x,ground_height)
 
-	var step_time = 20/max(walk_speed,velocity.length())
+	var step_time = 0.3
+	
 	
 	if foot_legL.global_position.distance_to(legL_target.global_position)>2 and foot_turn == 1:
 		foot_turn = -1
@@ -73,7 +78,10 @@ func _process(delta: float) -> void:
 		var tween = create_tween()
 		tween.set_trans(Tween.TRANS_QUAD)
 		tween.set_ease(Tween.EASE_OUT)
-		tween.tween_method(func(t):foot_legL.global_position = foot_legL_start.lerp(legL_target.global_position,t) - Vector2( 0,10*(0.25-pow(t-0.5,2)) ) ,0.,1.,step_time).finished.connect(func():foot_turn = 2)
+		
+		if foot_L_mode: step_time = 3/step_size
+		print(step_time)
+		tween.tween_method(func(t):foot_legL.global_position = foot_legL_start.lerp(legL_target.global_position,t) - Vector2( 0,5*(0.25-pow(t-0.5,2)) ) ,0.,1.,step_time).finished.connect(func():foot_turn = 2)
 			
 	elif foot_turn == 2 and foot_legR.global_position.distance_to(legR_target.global_position)>2:
 		foot_turn = -2
@@ -81,7 +89,10 @@ func _process(delta: float) -> void:
 		var tween = create_tween()
 		tween.set_trans(Tween.TRANS_QUAD)
 		tween.set_ease(Tween.EASE_OUT)
-		tween.tween_method(func(t):foot_legR.global_position = foot_legR_start.lerp(legR_target.global_position,t) - Vector2( 0,10*(0.25-pow(t-0.5,2)) ) ,0.,1.,step_time).finished.connect(func():foot_turn = 1)
+		
+		if foot_R_mode: step_time = 3/step_size
+		
+		tween.tween_method(func(t):foot_legR.global_position = foot_legR_start.lerp(legR_target.global_position,t) - Vector2( 0,5*(0.25-pow(t-0.5,2)) ) ,0.,1.,step_time).finished.connect(func():foot_turn = 1)
 	
 	
 	legL.set_point_position(2,(foot_legL.global_position - legL.global_position).limit_length(leg_length))

@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 TimeManager="*uid://br7y2yysgbwed"
 
+[debug]
+
+settings/stdout/print_fps=true
+
 [display]
 
 window/size/viewport_width=960
@@ -39,4 +43,5 @@ textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-environment/defaults/default_clear_color=Color(0.13139969, 0.13690665, 0.15010828, 1)
+environment/defaults/default_clear_color=Color(0.13333334, 0.13725491, 0.14901961, 0)
+viewport/transparent_background=true
